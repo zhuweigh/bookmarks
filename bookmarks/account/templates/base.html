@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta property="qc:admins" content="15420643141456375" />
+<title>{% block title %}{% endblock %}</title>
+<link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+<span class="logo">Bookmarks</span>
+{% if user_.is_authenticated %}
+<ul class="menu">
+<li {% if section == "dashboard" %}class="selected"{% endif %}>
+<a href="{% url "dashboard" %}">My dashboard</a>
+</li>
+<li {% if section == "images" %}class="selected"{% endif %}>
+<a href="#">Images</a>
+</li>
+<li {% if section == "people" %}class="selected"{% endif %}>
+<a href="#">People</a>
+</li>
+</ul>
+{% endif %}
+<span class="user">
+{% if user_.is_authenticated %}
+Hello {{ user_.username }},
+<a href="{% url "logout" %}">Logout</a>
+{% else %}
+<a href="{% url "login" %}">Log-in</a>
+{% endif %}
+</span>
+</div>
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close">✖</a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+<script>
+$(document).ready(function(){
+{% block domready %}
+{% endblock %}
+});
+</script>
+</body>
+</html>
